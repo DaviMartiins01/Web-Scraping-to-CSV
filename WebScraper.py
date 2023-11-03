@@ -1,8 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
+books = []
 
-for i in range(1, 51):
+for i in range(1, 4):
 	url = f"https://books.toscrape.com/catalogue/page-{i}.html"
 
 	response = requests.get(url)
@@ -14,7 +16,6 @@ for i in range(1, 51):
 
 	articles = order_list.find_all("article", class_="product_pod")
 
-	books = []
 
 	for article in articles:
 		image = article.find("img")
@@ -29,4 +30,7 @@ for i in range(1, 51):
 
 		books.append([title, price, star])
 
-	print(books)
+
+data_frame = pd.DataFrame(books, columns=['Title', 'Price', 'Star Rating'])
+
+data_frame.to_csv('Books.csv')
