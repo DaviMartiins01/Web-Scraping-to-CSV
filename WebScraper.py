@@ -1,30 +1,32 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = "https://books.toscrape.com/catalogue/page-1.html"
 
-response = requests.get(url)
-response = response.content
+for i in range(1, 51):
+	url = f"https://books.toscrape.com/catalogue/page-{i}.html"
 
-html = BeautifulSoup(response, "html.parser")
+	response = requests.get(url)
+	response = response.content
 
-order_list = html.find("ol")
+	html = BeautifulSoup(response, "html.parser")
 
-articles = order_list.find_all("article", class_="product_pod")
+	order_list = html.find("ol")
 
-books = []
+	articles = order_list.find_all("article", class_="product_pod")
 
-for article in articles:
-	image = article.find("img")
+	books = []
 
-	title = image.attrs["alt"]
+	for article in articles:
+		image = article.find("img")
 
-	star = article.find("p")
-	star = star["class"][1]
+		title = image.attrs["alt"]
 
-	price = article.find('p', class_= "price_color").text
-	price = float(price[1:])
+		star = article.find("p")
+		star = star["class"][1]
 
-	books.append([title, price, star])
+		price = article.find('p', class_= "price_color").text
+		price = float(price[1:])
 
-print(books)
+		books.append([title, price, star])
+
+	print(books)
