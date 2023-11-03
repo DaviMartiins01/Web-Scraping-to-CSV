@@ -9,4 +9,11 @@ response = response.content
 
 html = BeautifulSoup(response, "html.parser")
 
-print(html)
+order_list = html.find("ol")
+
+articles = order_list.find_all("article", class_="product_pod")
+
+for article in articles:
+	image = article.find("img")
+	title = image.attrs["alt"]
+	print(title)
